@@ -1,0 +1,7 @@
+.btn-container {
+  background-color: rgb(8, 106, 243);
+  width: fit-content;
+  padding: 10px;
+  border-radius: 5px;
+  color: white;
+}

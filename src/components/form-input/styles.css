@@ -1,0 +1,24 @@
+.form-input-container {
+  display: flex;
+  flex-direction: column;
+}
+.form-input-container input,
+.form-input-container textarea {
+  width: 500px;
+  border-radius: 5px;
+  height: 30px;
+  border-color: rgb(197, 193, 193);
+  border-width: 1px;
+  border-style: solid;
+  margin: 8px 0 20px 0;
+  padding-left: 5px;
+}
+.form-input-container .icon {
+  background: url("../../assets/dollar.svg") no-repeat 10px 7px ;
+  padding-left: 25px;
+}
+
+.form-input-container textarea {
+  padding-top: 10px;
+  height: 100px;
+}
