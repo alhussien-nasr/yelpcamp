@@ -1,10 +1,21 @@
 .new-camp-container {
   display: flex;
-  flex-direction: column;
   justify-content: center;
   align-items: center;
-  height: 100%;
+  flex-direction: column;
+  flex: 1;
+  margin-top: 70px;
 }
 .new-camp-container h1 {
   margin: 0 0 20px 0;
+}
+.new-camp-container .row-container {
+  display: flex;
+  align-items: center;
+  justify-content: space-evenly;
+  width: 100%;
+}
+
+.map-container{
+  width: 500px;
 }

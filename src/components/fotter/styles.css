@@ -1,9 +1,11 @@
 .fotter {
   background-color: rgb(50, 50, 50);
-  min-height: 30px;
-  margin-top: auto;
+  height: 30px;
   color: rgb(144, 144, 144);
   display: flex;
   align-items: center;
   padding-left: 10px;
+  position: relative;
+  width: 100%;
+  top: -30;
 }

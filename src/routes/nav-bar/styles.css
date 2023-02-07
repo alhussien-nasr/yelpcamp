@@ -1,13 +1,14 @@
 .nav-bar-container {
   width: 100%;
   background-color: rgb(50, 50, 50);
-  min-height: 50px;
+  height: 50px;
   display: flex;
   align-items: center;
-  position: sticky;
-  top: 0;
+  position: fixed;
   overflow: hidden;
   transition: min-height 600ms ease;
+  padding-right: 20px;
+  z-index: 100;
 }
 .nav-bar-container a {
   margin: 0 20px;
@@ -26,12 +27,17 @@
 .nav-bar-container .icon {
   display: none;
 }
-
+.nav-bar-container a:nth-of-type(4) {
+  margin-left: auto;
+}
 @media screen and (max-width: 768px) {
   .nav-bar-container {
     display: flex;
     flex-direction: column;
     padding-top: 10px;
+    overflow: hidden;
+    height: 50px;
+    transition: height 500ms ease-in;
   }
   .nav-bar-container p {
     margin-bottom: 10px;
@@ -50,19 +56,16 @@
     flex-direction: column;
     display: flex;
     align-items: center;
-    visibility: hidden;
-    transition: all 1s ease-out;
   }
   .open {
-    min-height: 150px;
-    transition: min-height 1s ease-in;
-  }
-  .visible {
-    visibility: visible;
-    /* transition: all 2s ease-in; */
+    height: 240px;
+    transition: height 500ms ease-in;
   }
 
   .nav-bar-container a:last-of-type {
     padding-bottom: 10px;
+  }
+  .nav-bar-container a:nth-of-type(4) {
+    margin-left: 0;
   }
 }

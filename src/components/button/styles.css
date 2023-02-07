@@ -5,3 +5,7 @@
   border-radius: 5px;
   color: white;
 }
+
+.btn-container:hover {
+  filter: brightness(95%);
+}
