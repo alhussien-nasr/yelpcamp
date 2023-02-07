@@ -15,7 +15,7 @@ export const CampDetailsCard = ({ camp }: propsTypes) => {
   const user = useAppSelector((store) => store.user.user);
   const deleteHandler = async () => {
     try {
-      await fetch(`http://localhost:8080/campgrounds/${id}`, {
+      await fetch(`https://yelpcamp-api.onrender.com/campgrounds/${id}`, {
         method: "delete",
         credentials: "include",
       });

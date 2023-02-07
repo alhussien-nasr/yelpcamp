@@ -32,7 +32,7 @@ export const SignUp = () => {
       formRef.current?.classList.add("was-validated");
     } else {
       try {
-        const data = await fetch("http://localhost:8080/user/", {
+        const data = await fetch("https://yelpcamp-api.onrender.com/user/", {
           method: "POST",
           body: JSON.stringify(camp),
           credentials: "include",

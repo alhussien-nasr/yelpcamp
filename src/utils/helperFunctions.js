@@ -1,4 +1,4 @@
-export const BASEURL = "http://localhost:8080/campgrounds";
+export const BASEURL = "https://yelpcamp-api.onrender.com/campgrounds";
 
 export const getCampgrounds = async () => {
   try {
@@ -24,7 +24,7 @@ export const postCampgrounds = async (camp, imgs) => {
   });
 
   try {
-    const data = await fetch("http://localhost:8080/campgrounds/", {
+    const data = await fetch("https://yelpcamp-api.onrender.com/campgrounds/", {
       method: "POST",
       credentials: "include",
       body: formData,
@@ -38,9 +38,12 @@ export const postCampgrounds = async (camp, imgs) => {
 
 export const getCampgroundByid = async (id) => {
   try {
-    const res = await fetch(`http://localhost:8080/campgrounds/${id}`, {
-      credentials: "include",
-    });
+    const res = await fetch(
+      `https://yelpcamp-api.onrender.com/campgrounds/${id}`,
+      {
+        credentials: "include",
+      }
+    );
     const data = await res.json();
     console.log(data);
     return data;
@@ -60,11 +63,14 @@ export const editCampground = async (camp, imgs, imageToDelete) => {
     Object.keys(imgs).forEach((key) => {
       formData.append("images", imgs[key]);
     });
-    const res = await fetch(`http://localhost:8080/campgrounds/${camp._id}`, {
-      method: "PUT",
-      body: formData,
-      credentials: "include",
-    }).then((res) => res.json());
+    const res = await fetch(
+      `https://yelpcamp-api.onrender.com/campgrounds/${camp._id}`,
+      {
+        method: "PUT",
+        body: formData,
+        credentials: "include",
+      }
+    ).then((res) => res.json());
     console.log(res);
   } catch (error) {
     console.log(error, "err");
@@ -74,7 +80,7 @@ export const editCampground = async (camp, imgs, imageToDelete) => {
 export const postReview = async (id, review) => {
   try {
     const { error } = await fetch(
-      `http://localhost:8080/campgrounds/${id}/reviews`,
+      `https://yelpcamp-api.onrender.com/campgrounds/${id}/reviews`,
       {
         body: JSON.stringify(review),
         method: "POST",

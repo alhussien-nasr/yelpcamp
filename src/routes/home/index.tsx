@@ -13,7 +13,7 @@ export const Home = () => {
     e: MouseEvent<HTMLAnchorElement, globalThis.MouseEvent>
   ) => {
     e.preventDefault();
-    await fetch("http://localhost:8080/user/logout", {
+    await fetch("https://yelpcamp-api.onrender.com/user/logout", {
       credentials: "include",
     });
     dispatch(addUser(null));

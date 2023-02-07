@@ -34,7 +34,7 @@ export const LogIn = () => {
       formRef.current?.classList.add("was-validated");
     } else {
       try {
-        const data = await fetch("http://localhost:8080/user/login", {
+        const data = await fetch("https://yelpcamp-api.onrender.com/user/login", {
           method: "POST",
           body: JSON.stringify(camp),
           credentials: "include",

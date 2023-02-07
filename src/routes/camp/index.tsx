@@ -35,7 +35,7 @@ export const Camp = () => {
   }, [location.pathname]);
 
   const deleteHandler = (reviewId: string) => async () => {
-    await fetch(`http://localhost:8080/campgrounds/${id}/reviews/${reviewId}`, {
+    await fetch(`https://yelpcamp-api.onrender.com/campgrounds/${id}/reviews/${reviewId}`, {
       method: "DELETE",
       credentials: "include",
     }).then((res) => res.json());
