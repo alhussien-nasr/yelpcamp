@@ -1,10 +1,9 @@
 import { createSlice } from "@reduxjs/toolkit";
 import { authorTypes } from "../../types/index";
 
-
 type userReducertypes = {
   loading: boolean;
-  user:  authorTypes |null;
+  user: authorTypes | null;
 };
 const initialState = {
   loading: false,

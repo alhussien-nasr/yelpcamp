@@ -1,4 +1,5 @@
 export const BASEURL = "https://yelpcamp-api.onrender.com/campgrounds";
+// export const BASEURL = "http://localhost:8080/campgrounds";
 
 export const getCampgrounds = async () => {
   try {
@@ -24,7 +25,7 @@ export const postCampgrounds = async (camp, imgs) => {
   });
 
   try {
-    const data = await fetch("https://yelpcamp-api.onrender.com/campgrounds/", {
+    const data = await fetch(BASEURL, {
       method: "POST",
       credentials: "include",
       body: formData,
@@ -38,12 +39,9 @@ export const postCampgrounds = async (camp, imgs) => {
 
 export const getCampgroundByid = async (id) => {
   try {
-    const res = await fetch(
-      `https://yelpcamp-api.onrender.com/campgrounds/${id}`,
-      {
-        credentials: "include",
-      }
-    );
+    const res = await fetch(BASEURL + "/" + id, {
+      credentials: "include",
+    });
     const data = await res.json();
     console.log(data);
     return data;
