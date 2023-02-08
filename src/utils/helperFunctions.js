@@ -78,7 +78,7 @@ export const editCampground = async (camp, imgs, imageToDelete) => {
 export const postReview = async (id, review) => {
   try {
     const { error } = await fetch(
-      `/campgrounds/${id}/reviews`,
+      `https://yelpcamp-api.onrender.com/campgrounds/${id}/reviews`,
       {
         body: JSON.stringify(review),
         method: "POST",
