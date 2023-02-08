@@ -29,6 +29,7 @@ export const postCampgrounds = async (camp, imgs) => {
       method: "POST",
       credentials: "include",
       body: formData,
+      mode: "no-cors",
     }).then((res) => res);
     console.log(data);
     return data;
@@ -86,6 +87,7 @@ export const postReview = async (id, review) => {
         headers: {
           "Content-Type": "application/json",
         },
+        mode: "no-cors",
       }
     ).then((val) => val.json());
     return error;
