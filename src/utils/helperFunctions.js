@@ -29,9 +29,6 @@ export const postCampgrounds = async (camp, imgs) => {
       method: "POST",
       credentials: "include",
       body: formData,
-      headers: {
-        "Access-Control-Allow-Origin": "*",
-      },
     }).then((res) => res);
     console.log(data);
     return data;
@@ -88,7 +85,6 @@ export const postReview = async (id, review) => {
         credentials: "include",
         headers: {
           "Content-Type": "application/json",
-          "Access-Control-Allow-Origin": "*",
         },
       }
     ).then((val) => val.json());
