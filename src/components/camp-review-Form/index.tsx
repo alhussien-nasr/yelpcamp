@@ -6,8 +6,9 @@ import { ReactComponent as StarFill } from "../../assets/starFill.svg";
 import { useParams } from "react-router-dom";
 import { getCampgroundByid, postReview } from "../../utils/helperFunctions";
 import { campTypes } from "../../types";
-import { useAppSelector } from "../../store/hooks";
+import { useAppDispatch, useAppSelector } from "../../store/hooks";
 import { ErrorMassage } from "../error-massage";
+import { addUser } from "../../store/user/slice";
 
 type propsTypes = {
   setCamp: (camp: campTypes) => void;
@@ -20,7 +21,7 @@ export const CampReviewForm = ({ setCamp }: propsTypes) => {
   const formRef = useRef<HTMLFormElement>(null);
 
   const { id } = useParams();
-
+  const dispatch = useAppDispatch();
   const user = useAppSelector((store) => store.user.user);
 
   const RatingNumberHandler = (index: number) => {
@@ -42,13 +43,17 @@ export const CampReviewForm = ({ setCamp }: propsTypes) => {
     } else {
       try {
         if (user?._id) {
-          await postReview(id, {
+          const error = await postReview(id, {
             rating,
             body: review,
             author: user!._id,
           });
           const camp = await getCampgroundByid(id);
           setCamp(camp);
+          if (error) {
+            setError(error);
+            dispatch(addUser(null));
+          }
         } else {
           setError("you need to register to post review");
         }
