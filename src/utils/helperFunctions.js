@@ -29,6 +29,9 @@ export const postCampgrounds = async (camp, imgs) => {
       method: "POST",
       credentials: "include",
       body: formData,
+      headers:{
+        
+      }
     }).then((res) => res);
     console.log(data);
     return data;
