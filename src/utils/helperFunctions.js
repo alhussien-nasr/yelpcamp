@@ -29,7 +29,6 @@ export const postCampgrounds = async (camp, imgs) => {
       method: "POST",
       credentials: "include",
       body: formData,
-      mode: "no-cors",
     }).then((res) => res);
     console.log(data);
     return data;
@@ -62,14 +61,11 @@ export const editCampground = async (camp, imgs, imageToDelete) => {
     Object.keys(imgs).forEach((key) => {
       formData.append("images", imgs[key]);
     });
-    const res = await fetch(
-      `https://yelpcamp-api.onrender.com/campgrounds/${camp._id}`,
-      {
-        method: "PUT",
-        body: formData,
-        credentials: "include",
-      }
-    ).then((res) => res.json());
+    const res = await fetch(`${BASEURL}/${camp._id}`, {
+      method: "PUT",
+      body: formData,
+      credentials: "include",
+    }).then((res) => res.json());
     console.log(res);
   } catch (error) {
     console.log(error, "err");
@@ -78,18 +74,14 @@ export const editCampground = async (camp, imgs, imageToDelete) => {
 
 export const postReview = async (id, review) => {
   try {
-    const { error } = await fetch(
-      `https://yelpcamp-api.onrender.com/campgrounds/${id}/reviews`,
-      {
-        body: JSON.stringify(review),
-        method: "POST",
-        credentials: "include",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        mode: "no-cors",
-      }
-    ).then((val) => val.json());
+    const { error } = await fetch(`${BASEURL}/${id}/reviews`, {
+      body: JSON.stringify(review),
+      method: "POST",
+      credentials: "include",
+      headers: {
+        "Content-Type": "application/json",
+      },
+    }).then((val) => val.json());
     return error;
   } catch (error) {
     console.log(error);
