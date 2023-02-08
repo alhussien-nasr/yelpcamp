@@ -35,10 +35,13 @@ export const Camp = () => {
   }, [location.pathname]);
 
   const deleteHandler = (reviewId: string) => async () => {
-    await fetch(`https://yelpcamp-api.onrender.com/campgrounds/${id}/reviews/${reviewId}`, {
-      method: "DELETE",
-      credentials: "include",
-    }).then((res) => res.json());
+    await fetch(
+      `https://yelpcamp-api.onrender.com/campgrounds/${id}/reviews/${reviewId}`,
+      {
+        method: "DELETE",
+        credentials: "include",
+      }
+    ).then((res) => res.json());
     getdata();
   };
 
@@ -48,7 +51,7 @@ export const Camp = () => {
 
       <div className="camp-review-container">
         <MapContainer
-          center={[40.3916172, -111.8507662]}
+          center={camp.geometry}
           zoom={2}
           style={{
             width: "100%",
