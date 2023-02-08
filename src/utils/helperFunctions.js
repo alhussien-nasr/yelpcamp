@@ -86,7 +86,6 @@ export const postReview = async (id, review) => {
         headers: {
           "Content-Type": "application/json",
         },
-        mode: "cors",
       }
     ).then((val) => val.json());
     return error;
