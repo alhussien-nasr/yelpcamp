@@ -4,48 +4,41 @@ import "./styles.css";
 import { NoMatch } from "../../components/no-match/indes";
 import { CampDetailsCard } from "../../components/camp-details-card";
 import { CampReviewForm } from "../../components/camp-review-Form";
-import { getCampgroundByid } from "../../utils/helperFunctions";
 import { campTypes, reviewTypes } from "../../types";
 import CampReviewCard from "../../components/camp-review-card";
 import { LatLngExpression } from "leaflet";
 import { MapContainer, Marker, Popup, TileLayer } from "react-leaflet";
+import { useAppDispatch, useAppSelector } from "../../store/hooks";
+import { apiSlice } from "../../store/api/apiSlice";
+
+import {
+  selectCampgrounds,
+  useDeleteCampgroundMutation,
+  useDeleteReviewMutation,
+  useGetCampgroundByidQuery,
+} from "../../store/campground/campgroundAPI";
+import { resetUser } from "../../store/user/slice";
+import { ErrorMassage } from "../../components/error-massage";
 
 export const Camp = () => {
-  const [camp, setCamp] = useState({} as campTypes);
-  const [position, setPosition] = useState<LatLngExpression>([51.505, -0.09]);
-
-  console.log(camp);
-  const location = useLocation();
-
   const { id } = useParams();
+  const dispatch = useAppDispatch();
 
-  const getdata = async () => {
-    try {
-      const data = await getCampgroundByid(id);
-      setCamp(data);
-      console.log(data);
-    } catch (error) {
-      console.log(error);
-    }
-  };
-
-  useLayoutEffect(() => {
-    console.log("fired");
-    getdata();
-  }, [location.pathname]);
+  const { isError, data: camp } = useGetCampgroundByidQuery(id!);
+  const [deleteReview, { isError: deleteError, isLoading, error }] =
+    useDeleteReviewMutation();
 
   const deleteHandler = (reviewId: string) => async () => {
-    await fetch(
-      `https://yelpcamp-api.onrender.com/campgrounds/${id}/reviews/${reviewId}`,
-      {
-        method: "DELETE",
-        credentials: "include",
-      }
-    ).then((res) => res.json());
-    getdata();
+    deleteReview({ id, reviewId });
   };
 
-  return camp._id ? (
+  let content;
+  if (deleteError && error && "status" in error) {
+    if (error.status === 401) content = "you need to login ";
+    dispatch(resetUser());
+  }
+
+  return camp?._id ? (
     <div className="camp-container">
       <CampDetailsCard camp={camp} />
 
@@ -73,7 +66,8 @@ export const Camp = () => {
             </Popup>
           </Marker>
         </MapContainer>
-        <CampReviewForm setCamp={setCamp} />
+        {deleteError && <ErrorMassage>{content}</ErrorMassage>}
+        <CampReviewForm />
         {camp?.reviews?.map((item: reviewTypes) => (
           <CampReviewCard
             key={item._id}

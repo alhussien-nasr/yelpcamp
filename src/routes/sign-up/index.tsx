@@ -1,10 +1,14 @@
 import React, { ChangeEvent, FormEvent, useRef, useState } from "react";
 import { Button } from "../../components/button";
 import { FormInput } from "../../components/form-input";
-import { useNavigate } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import "./styles.css";
 import { addUser } from "../../store/user/slice";
 import { useAppDispatch } from "../../store/hooks";
+import { useRegisterUserMutation } from "../../store/user/userAPI";
+import ClipLoader from "react-spinners/ClipLoader";
+import { ErrorMassage } from "../../components/error-massage";
+
 const initalState = {
   email: "",
   password: "",
@@ -13,16 +17,18 @@ const initalState = {
 
 export const SignUp = () => {
   const formRef = useRef<HTMLFormElement>(null);
-  const [camp, setCamp] = useState(initalState);
-  console.log(camp);
-
+  const [user, setUser] = useState(initalState);
+  const [registerUser, { isError, isLoading, isSuccess, error, data }] =
+    useRegisterUserMutation();
+  console.log(isError, isLoading, isSuccess, error, data);
   const navigate = useNavigate();
   const dispatch = useAppDispatch();
+  const { state } = useLocation();
 
   const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
     e.preventDefault();
     const { name, value } = e.target;
-    setCamp({ ...camp, [name]: value });
+    setUser({ ...user, [name]: value });
   };
 
   const submitHandler = async (e: FormEvent<HTMLFormElement>) => {
@@ -32,23 +38,28 @@ export const SignUp = () => {
       formRef.current?.classList.add("was-validated");
     } else {
       try {
-        const data = await fetch("https://yelpcamp-api.onrender.com/user/", {
-          method: "POST",
-          body: JSON.stringify(camp),
-          credentials: "include",
-          headers: {
-            "Content-Type": "application/json",
-          },
-        }).then((res) => res.json());
-        console.log(data);
-        dispatch(addUser(data));
-        navigate("/");
+        registerUser(user);
       } catch (error) {
         console.log(error);
       }
     }
   };
 
+  if (isSuccess) {
+    dispatch(addUser(data));
+    state.from == "/signup" ? navigate(-2) : navigate(-1);
+  }
+  let content = "";
+  if (
+    isError &&
+    error &&
+    "data" in error &&
+    typeof error.data === "object" &&
+    "message" in error.data! &&
+    typeof error.data.message == "string"
+  ) {
+    content = error.data.message;
+  }
   return (
     <div className="sign-up-container">
       <section>
@@ -67,7 +78,10 @@ export const SignUp = () => {
             name="password"
             onChange={handleChange}
           />
-          <Button title="sign up" />
+          {isError && <ErrorMassage btn={false}>{content}</ErrorMassage>}
+          <Button disabled={isLoading} title="sign up">
+            {isLoading && <ClipLoader />}
+          </Button>
         </form>
       </section>
     </div>

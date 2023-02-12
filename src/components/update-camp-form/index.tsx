@@ -1,20 +1,18 @@
-import React, {
-  ChangeEvent,
-  FormEvent,
-  MouseEvent,
-  useEffect,
-  useState,
-} from "react";
+import React, { ChangeEvent, FormEvent, useState } from "react";
 import { FormInput } from "../form-input";
-import { Form, Link, useNavigate, useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import { Button } from "../button";
-import { editCampground, getCampgroundByid } from "../../utils/helperFunctions";
-import { useAppSelector } from "../../store/hooks";
+import { useAppDispatch, useAppSelector } from "../../store/hooks";
 import { authorTypes, imageType } from "../../types";
-import { NoMatch } from "../no-match/indes";
 import ClipLoader from "react-spinners/ClipLoader";
 
 import "./styles.css";
+import {
+  useGetCampgroundByidQuery,
+  useUpdateCampgroundMutation,
+} from "../../store/campground/campgroundAPI";
+import { resetUser } from "../../store/user/slice";
+import { ErrorMassage } from "../error-massage";
 type initalStateTypes = {
   title: string;
   describtion: string;
@@ -35,24 +33,17 @@ const initalState = {
 export const UpdateCampForm = () => {
   const { id } = useParams();
   const navigate = useNavigate();
-
-  const [camp, setCamp] = useState(initalState);
-
+  const { data } = useGetCampgroundByidQuery(id!);
+  const [camp, setCamp] = useState(data);
   const [images, setImages] = useState<any>([]);
   const [imageToDelete, setImageToDelete] = useState<string[]>([]);
-  const [loading, setloading] = useState(false);
+
+  const dispatch = useAppDispatch();
 
   const user = useAppSelector((store) => store.user.user);
-
-  const getdata = async () => {
-    const data = await getCampgroundByid(id);
-    setCamp(data);
-  };
-
-  useEffect(() => {
-    getdata();
-  }, []);
-
+  const [UpdateCamp, { isError, error, isSuccess, isLoading }] =
+    useUpdateCampgroundMutation();
+  console.log(isError, error);
   const handleChange = (
     e: ChangeEvent<HTMLInputElement> | ChangeEvent<HTMLTextAreaElement>
   ) => {
@@ -60,7 +51,7 @@ export const UpdateCampForm = () => {
     const { name, value } = e.target;
     setCamp({ ...camp, [name]: value });
   };
-
+  console.log(camp);
   const deleteImageHandler = (image: string) => {
     return () => setImageToDelete([...imageToDelete, image]);
   };
@@ -68,15 +59,27 @@ export const UpdateCampForm = () => {
   const submitHandler = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     try {
-      setloading(true);
-      await editCampground({ ...camp, imageToDelete }, images);
-      navigate(`/Campgrounds/${id}`);
+      const formData = new FormData();
+      formData.append("data", JSON.stringify({ ...camp, imageToDelete }));
+      Object.keys(images).forEach((key) => {
+        formData.append("images", images[key]);
+      });
+      console.log(formData, "form");
+      await UpdateCamp({ body: formData, id });
     } catch (error) {
       console.log(error);
     }
   };
 
-  return camp.author?._id == user?._id ? (
+  isSuccess && navigate(`/Campgrounds/${id}`);
+  let content;
+  if (isError && error && "status" in error) {
+    if (error.status === 401)
+      content = "you need to login to create campground";
+    dispatch(resetUser());
+  }
+
+  return (
     <form onSubmit={submitHandler}>
       <FormInput
         title={"Title"}
@@ -118,25 +121,23 @@ export const UpdateCampForm = () => {
       />
       <h5>Delete Image</h5>
       <div className="thumbnail-container">
-        {camp.images.map((img) => (
+        {camp.images.map((img: any) => (
           <div className="thumbnail">
             <input type="checkbox" onClick={deleteImageHandler(img.filename)} />
             <img
               src={img.url.replace("/upload", "/upload/c_scale,h_100,w_150")}
-              onError={({ currentTarget }) => {
-                currentTarget.onerror = null; // prevents looping
-                currentTarget.src = img.url;
-              
-              }}
+              // onError={({ currentTarget }) => {
+              //   currentTarget.onerror
+              //   currentTarget.src = img.url;
+              // }}
             />
           </div>
         ))}
       </div>
-      <Button title="update Campground" disabled={loading} color="green">
-        {loading && <ClipLoader />}
+      {isError && <ErrorMassage>{content}</ErrorMassage>}
+      <Button title="update Campground" disabled={isLoading} color="green">
+        {isLoading && <ClipLoader />}
       </Button>
     </form>
-  ) : (
-    <NoMatch />
   );
 };

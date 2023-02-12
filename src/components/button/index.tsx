@@ -17,6 +17,7 @@ export const Button = ({
 }: propsTypes) => {
   return (
     <button
+    
       onClick={onClick}
       style={{
         backgroundColor: color && color,

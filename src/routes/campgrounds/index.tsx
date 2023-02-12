@@ -1,18 +1,26 @@
 import React, { useEffect, useState } from "react";
 import "./styles.css";
 import { useAppDispatch, useAppSelector } from "../../store/hooks";
-import { fetchCamps } from "../../store/campground/slice";
 import { MapContainer, TileLayer, Marker, Popup } from "react-leaflet";
 import { Card } from "../../components/card";
+import ClipLoader from "react-spinners/ClipLoader";
+import { ErrorMassage } from "../../components/error-massage";
+import {
+  selectCampgrounds,
+  useGetCampgroundsQuery,
+} from "../../store/campground/campgroundAPI";
 
 export const Campgrounds = () => {
-  const camps = useAppSelector((state) => state.campgrounds.campgrounds);
-  const dispatch = useAppDispatch();
 
-  useEffect(() => {
-    dispatch(fetchCamps());
-  }, []);
-
+  const { error, isLoading, isError } = useGetCampgroundsQuery();
+  const camps = useAppSelector((s) => selectCampgrounds(s));
+  console.log(camps, "camps");
+  console.log(isLoading, "isloading");
+  console.log(error, "error");
+  let content;
+  if (error && "error" in error) {
+    content = error.error;
+  }
   return (
     <div className="campgrounds-container">
       <MapContainer
@@ -33,22 +41,26 @@ export const Campgrounds = () => {
           url="https://tiles.stadiamaps.com/tiles/alidade_smooth_dark/{z}/{x}/{y}{r}.png"
         />
 
-        {camps?.map((camp) => {
-          return (
-            camp.geometry.length && (
-              <Marker position={camp.geometry}>
-                <Popup>
-                  {camp.title}
-                  <br /> {camp.location}
-                </Popup>
-              </Marker>
-            )
-          );
-        })}
+        {!isLoading &&
+          camps?.map((camp: any) => {
+            return (
+              camp.geometry.length && (
+                <Marker position={camp.geometry}>
+                  <Popup>
+                    {camp.title}
+                    <br /> {camp.location}
+                  </Popup>
+                </Marker>
+              )
+            );
+          })}
       </MapContainer>
-      {camps?.map((camp) => (
-        <Card data={camp} />
-      ))}
+      {isError && <ErrorMassage btn={false}>{content}</ErrorMassage>}
+      {isLoading ? (
+        <ClipLoader />
+      ) : (
+        camps?.map((camp: any) => <Card data={camp} />)
+      )}
     </div>
   );
 };

@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import logo from "./logo.svg";
 import "./App.css";
 import { Campgrounds } from "./routes/campgrounds";
@@ -20,6 +20,8 @@ import { useAppSelector } from "./store/hooks";
 import { Home } from "./routes/home";
 function App() {
   const user = useAppSelector((store) => store.user.user);
+  useEffect(() => {}, []);
+
   const router = createBrowserRouter(
     createRoutesFromElements(
       <Route>
@@ -38,11 +40,7 @@ function App() {
       </Route>
     )
   );
-  return (
-    <>
-      <RouterProvider router={router} />
-    </>
-  );
+  return <RouterProvider router={router} />;
 }
 
 export default App;

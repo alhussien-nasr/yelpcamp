@@ -3,27 +3,38 @@ import "./styles.css";
 import { Link, useNavigate, useParams } from "react-router-dom";
 import { Button } from "../button";
 import { campTypes, imageType } from "../../types";
-import { useAppSelector } from "../../store/hooks";
+import { useAppDispatch, useAppSelector } from "../../store/hooks";
 import "react-responsive-carousel/lib/styles/carousel.min.css"; // requires a loader
 import { Carousel } from "react-responsive-carousel";
+import { useDeleteCampgroundMutation } from "../../store/campground/campgroundAPI";
+import { resetUser } from "../../store/user/slice";
 
 type propsTypes = { camp: campTypes };
 
 export const CampDetailsCard = ({ camp }: propsTypes) => {
   const navigation = useNavigate();
   const { id } = useParams();
+  const dispatch = useAppDispatch();
   const user = useAppSelector((store) => store.user.user);
+  const [deleteCampgtound, { isError, isLoading, isSuccess, error }] =
+    useDeleteCampgroundMutation();
+
   const deleteHandler = async () => {
     try {
-      await fetch(`https://yelpcamp-api.onrender.com/campgrounds/${id}`, {
-        method: "delete",
-        credentials: "include",
-      });
-      navigation("/");
+      deleteCampgtound(id);
     } catch (error) {
       console.log(error);
     }
   };
+  if (isSuccess) {
+    navigation("/");
+  }
+  let content;
+  if (isError && error && "status" in error) {
+    if (error.status === 401) content = "you need to login ";
+    dispatch(resetUser());
+  }
+
   console.log(camp.author._id, user?._id, "camp");
   console.log(camp);
   return (
