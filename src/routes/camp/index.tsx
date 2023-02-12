@@ -29,7 +29,7 @@ export const Camp = () => {
     isError,
     data: camp,
     isSuccess: isFetchCampSuccess,
-    isLoading: isFetchCampLoadin,
+    isLoading: isFetchCampLoading,
   } = useGetCampgroundByidQuery(id!);
   const [deleteReview, { isError: deleteError, isLoading, error, isSuccess }] =
     useDeleteReviewMutation();
@@ -46,7 +46,7 @@ export const Camp = () => {
   console.log(error);
   console.log(camp);
 
-  if (isFetchCampLoadin) {
+  if (isFetchCampLoading) {
     return <ClipLoader />;
   }
 
@@ -92,5 +92,7 @@ export const Camp = () => {
         </div>
       </div>
     );
+  } else {
+    return null;
   }
 };

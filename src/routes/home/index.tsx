@@ -1,11 +1,15 @@
-import React, { MouseEvent, useEffect, useRef } from "react";
+import React, { MouseEvent, useEffect, useRef, useState } from "react";
 import "./styles.css";
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import { useAppDispatch, useAppSelector } from "../../store/hooks";
 import { addUser, resetUser } from "../../store/user/slice";
 import { Button } from "../../components/button";
 import { useLogOutUserMutation } from "../../store/user/userAPI";
+import { ReactComponent as Menu } from "../../assets/menu.svg";
+
 export const Home = () => {
+  const [open, setOpen] = useState(false);
+
   const user = useAppSelector((store) => store?.user?.user);
   const { pathname } = useLocation();
   const dispatch = useAppDispatch();
@@ -22,9 +26,13 @@ export const Home = () => {
   if (isSuccess) {
     dispatch(resetUser());
   }
+  const clickHandler = () => {
+    setOpen((val) => !val);
+  };
+  console.log(open)
   return (
     <div className="home-container">
-      <nav>
+      <nav className={open ? "open" : ""}>
         <h4>YelpCamp</h4>
         <div className="link-container">
           <Link to={"/"} className="active">
@@ -46,6 +54,7 @@ export const Home = () => {
             </a>
           )}
         </div>
+        <Menu className="icon" onClick={clickHandler} />
       </nav>
       <section>
         <h2>YelpCamp</h2>

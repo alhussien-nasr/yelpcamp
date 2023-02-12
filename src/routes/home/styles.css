@@ -12,9 +12,11 @@
 }
 .home-container nav {
   display: flex;
+  position: sticky;
   padding: 10px 80px;
   align-items: center;
   justify-content: space-around;
+  height: 50px;
   width: 100vw;
 }
 .home-container nav a {
@@ -38,3 +40,5 @@
   margin: auto;
   align-items: center;
 }
+
+

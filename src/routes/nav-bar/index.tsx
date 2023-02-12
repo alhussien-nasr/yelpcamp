@@ -13,6 +13,7 @@ export const NavBar = () => {
   const clickHandler = () => {
     setOpen((val) => !val);
   };
+
   const user = useAppSelector((store) => store.user.user);
   console.log(user, "user");
   const dispatch = useAppDispatch();
@@ -49,7 +50,6 @@ export const NavBar = () => {
             log out
           </a>
         )}
-        <Menu className="icon" onClick={clickHandler} />
       </div>
       <Outlet />
       <Fotter />
