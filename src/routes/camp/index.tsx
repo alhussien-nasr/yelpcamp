@@ -10,6 +10,7 @@ import { LatLngExpression } from "leaflet";
 import { MapContainer, Marker, Popup, TileLayer } from "react-leaflet";
 import { useAppDispatch, useAppSelector } from "../../store/hooks";
 import { apiSlice } from "../../store/api/apiSlice";
+import ClipLoader from "react-spinners/ClipLoader";
 
 import {
   selectCampgrounds,
@@ -38,7 +39,9 @@ export const Camp = () => {
     dispatch(resetUser());
   }
 
-  return camp?._id ? (
+  return isLoading ? (
+    <ClipLoader />
+  ) : (
     <div className="camp-container">
       <CampDetailsCard camp={camp} />
 
@@ -77,7 +80,5 @@ export const Camp = () => {
         ))}
       </div>
     </div>
-  ) : (
-    <NoMatch />
   );
 };

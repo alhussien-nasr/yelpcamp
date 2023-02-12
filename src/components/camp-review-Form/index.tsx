@@ -60,7 +60,7 @@ export const CampReviewForm = () => {
   let content;
   if (isError && error && "status" in error) {
     if (error.status === 401)
-      content = "you need to login to create campground";
+      content = "you need to login to add Review";
     dispatch(resetUser());
   }
 
