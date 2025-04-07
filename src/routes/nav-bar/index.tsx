@@ -27,7 +27,7 @@ export const NavBar = () => {
 
   return (
     <>
-      <div className={`nav-bar-container`}>
+      <div className={`nav-bar-container ${open ? "open" : ""}`}>
         <p>YelpCamp</p>
         <Menu className="icon" onClick={toggleMenu} />
         <div className={`link-container ${open ? "show" : ""}`}>

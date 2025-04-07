@@ -50,3 +50,31 @@ li {
   padding-left: 0;
   padding: 0;
 }
+
+/* Add responsive styles */
+@media (max-width: 768px) {
+  body {
+    font-size: 14px;
+  }
+
+  .btn-container {
+    width: 100%;
+    padding: 8px;
+  }
+
+  .camp-details-container,
+  .camp-review-container {
+    width: 90%;
+    margin: 10px auto;
+  }
+
+  .card-container {
+    flex-direction: column;
+    width: 100%;
+  }
+
+  .card-container img {
+    width: 100%;
+    height: auto;
+  }
+}
