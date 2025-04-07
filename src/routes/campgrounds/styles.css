@@ -1,0 +1,9 @@
+.campgrounds-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.campgrounds-container  h1 {
+  margin: 60px;
+}

@@ -1,0 +1,19 @@
+.thumbnail-container {
+  display: flex;
+  overflow: auto;
+  width: 500px;
+  margin: 20px 0;
+}
+.thumbnail {
+  position: relative;
+  margin: 0 5px;
+}
+.thumbnail-container input {
+  position: absolute;
+  top: 5;
+  left: 5;
+}
+.thumbnail-container img {
+  width: 150px;
+  height: 150px;
+}

@@ -1,0 +1,8 @@
+.add-camp-form-container textarea {
+  height: 120px;
+  width: 500px;
+  border-color: rgb(197, 193, 193);
+  border-style: solid;
+  margin: 8px 0 20px 0;
+  padding-left: 5px;
+}

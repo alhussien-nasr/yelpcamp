@@ -1,0 +1,8 @@
+.review-body p {
+  margin: 5px 0;
+}
+.review-body .star {
+  transform: scale(0.7);
+  display: inline-block;
+  overflow: hidden;
+}
